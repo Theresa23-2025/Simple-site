@@ -15,21 +15,24 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t simple-site .'
-            }
-        }
+   stage('Build Docker Image') {
+    steps {
+        sh '''
+        cd devops-build
+        docker build -t simple-site .
+        '''
+    }
+}
 
-        stage('Run Docker Container') {
-            steps {
-                sh '''
-                docker stop simple-site || true
-                docker rm simple-site || true
-                docker run -d --name simple-site -p 80:80 simple-site
-                '''
-            }
-        }
+   stage('Run Docker Container') {
+    steps {
+        sh '''
+        docker stop simple-site || true
+        docker rm simple-site || true
+        docker run -d --name simple-site -p 80:80 simple-site
+        '''
+    }
+}
     }
 
     post {
